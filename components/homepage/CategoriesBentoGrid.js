@@ -6,7 +6,7 @@ import { ArrowLeft, Plus, ShoppingCart, ArrowUpRight } from 'lucide-react';
 
 export default function CategoriesBentoGrid() {
   const handleWhatsAppClick = (categoryName) => {
-    const phoneNumber = '1234567890'; // Replace with client's real number
+    const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER; // Replace with client's real number
     const message = encodeURIComponent(
       `Hello 92degree! I am browsing the categories grid and interested in: "${categoryName}". Please share details.`
     );
@@ -39,7 +39,7 @@ export default function CategoriesBentoGrid() {
           <div className="bg-[#1A1A1A] border-3 sm:border-4 border-[#1A1A1A] rounded-[2rem] p-6 sm:p-8 relative min-h-[380px] sm:min-h-[440px] flex flex-col justify-between overflow-hidden group shadow-sm">
             <div className="absolute inset-0 z-0">
               <Image
-                src="/category/puffer.png"
+                src="/category/puffer.webp"
                 alt="Leather Puffer Jacket"
                 fill
                 sizes="(max-width: 768px) 100vw, 66vw"
@@ -83,7 +83,7 @@ export default function CategoriesBentoGrid() {
           <div className="bg-[#1A1A1A] border-3 sm:border-4 border-[#1A1A1A] rounded-[2rem] relative min-h-[500px] md:min-h-full overflow-hidden group shadow-sm flex flex-col justify-between p-6 sm:p-8">
             <div className="absolute inset-0 z-0">
               <Image
-                src="/category/leather-grid.png"
+                src="/category/leather-grid.webp"
                 alt="Signature Leather Collection"
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -121,7 +121,7 @@ export default function CategoriesBentoGrid() {
           <div className="bg-[#1A1A1A] border-3 sm:border-4 border-[#1A1A1A] rounded-[2rem] p-5 relative overflow-hidden shadow-sm min-h-[220px] flex flex-col justify-between group">
             <div className="absolute inset-0 z-0">
               <Image
-                src="/category/hoodie-grid.png"
+                src="/category/hoodie-grid.webp"
                 alt="Hoodies"
                 fill
                 sizes="(max-width: 768px) 100vw, 25vw"
