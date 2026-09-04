@@ -134,9 +134,7 @@ export default function ProductClient({ product, relatedProducts }) {
                 </span>
               ) : (
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl font-black text-[#A9744F]">
-                    {product.currency} {product.price?.toLocaleString()}
-                  </span>
+                  
                   <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
                     FREE EXPRESS SHIPPING
                   </span>
