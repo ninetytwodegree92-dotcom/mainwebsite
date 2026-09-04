@@ -206,11 +206,11 @@ export default function CategoryClient({ category, categoryProducts, allCategori
                         </span>
                       </div>
 
-                      <div className="absolute top-4 right-4 z-10">
+                      {/* <div className="absolute top-4 right-4 z-10">
                         <span className="px-3.5 py-1 text-xs font-black text-white bg-[#A9744F] rounded-full shadow-xs">
                           {product.currency} {product.price?.toLocaleString()}
                         </span>
-                      </div>
+                      </div> */}
                     </Link>
 
                     {/* Product Info & Actions */}
