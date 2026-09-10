@@ -5,14 +5,7 @@
 // ---- Store WhatsApp number (update this once, used everywhere) ----
 export const STORE_WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER; // replace with real number, no + or spaces
 
- 
-// ---- WhatsApp link generator ----
-export function getWhatsAppLink(product, selectedSize = null) {
-  const message = `Hi, I'm interested in the ${product.name}${
-    selectedSize ? ` (Size: ${selectedSize})` : ""
-  }. Is it available?`;
-  return `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+  
 
 // ---- Categories (nav dropdown + shop filters) ----
 export const categories = [
@@ -384,33 +377,39 @@ export const products = [
 // ==========================================================
 // HELPER GETTERS
 // ==========================================================
+import { client } from '@/sanity/client';
+import {
+  ALL_PRODUCTS_QUERY,
+  PRODUCT_BY_SLUG_QUERY,
+  PRODUCTS_BY_CATEGORY_QUERY,
+  ALL_CATEGORIES_QUERY,
+  ALL_PRODUCT_SLUGS_QUERY,
+} from '@/sanity/queries';
 
-export function getAllProducts() {
-  return products;
+ 
+export function getWhatsAppLink(product, selectedSize = null) {
+  const message = `Hi, I'm interested in the ${product.name}${
+    selectedSize ? ` (Size: ${selectedSize})` : ''
+  }. Is it available?`;
+  return `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
-export function getFeaturedProducts() {
-  return products.filter((p) => p.featured);
+export async function getAllProducts() {
+  return client.fetch(ALL_PRODUCTS_QUERY);
 }
 
-export function getProductsByCategory(categorySlug) {
-  return products.filter((p) => p.category === categorySlug);
+export async function getProductBySlug(slug) {
+  return client.fetch(PRODUCT_BY_SLUG_QUERY, { slug });
 }
 
-export function getProductBySlug(slug) {
-  return products.find((p) => p.slug === slug);
+export async function getProductsByCategory(categorySlug) {
+  return client.fetch(PRODUCTS_BY_CATEGORY_QUERY, { categorySlug });
 }
 
-export function getProductById(id) {
-  return products.find((p) => p.id === Number(id));
+export async function getCategories() {
+  return client.fetch(ALL_CATEGORIES_QUERY);
 }
 
-export function getRelatedProducts(product, limit = 4) {
-  return products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, limit);
-}
-
-export function getAllProductSlugs() {
-  return products.map((p) => ({ params: { slug: p.slug } }));
+export async function getAllProductSlugs() {
+  return client.fetch(ALL_PRODUCT_SLUGS_QUERY);
 }

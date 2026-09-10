@@ -1,18 +1,26 @@
 import { notFound } from 'next/navigation';
- 
 import WhatsAppCtaBar from '@/components/WhatsAppCtaBar';
 import CategoryClient from '@/components/category/CategoryClient';
-import { categories, getProductsByCategory } from '@/data/products';
+import { client } from '@/sanity/client';
+import {
+  CATEGORY_BY_SLUG_QUERY,
+  ALL_CATEGORIES_QUERY,
+  PRODUCTS_PAGINATED_QUERY,
+  PRODUCTS_COUNT_QUERY,
+} from '@/sanity/queries';
 
-// --- Generate static params for all categories ---
+const PAGE_SIZE = 9;
+
+// --- Static params ---
 export async function generateStaticParams() {
-  return categories.map((cat) => ({ slug: cat.slug }));
+  const cats = await client.fetch(ALL_CATEGORIES_QUERY);
+  return cats.map((c) => ({ slug: c.slug }));
 }
 
-// --- Dynamic SEO Metadata ---
+// --- SEO Metadata ---
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const category = categories.find((c) => c.slug === slug);
+  const category = await client.fetch(CATEGORY_BY_SLUG_QUERY, { slug });
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://92degree.com';
 
   if (!category) {
@@ -23,7 +31,16 @@ export async function generateMetadata({ params }) {
   }
 
   const title = `${category.label} Collection | 92DEGREE Official Store`;
-  const description = `Explore the official 92DEGREE ${category.label} collection. Engineered for thermal comfort and luxury streetwear.`;
+  const description =
+    category.tagline ||
+    `Explore the official 92DEGREE ${category.label} collection. Engineered for thermal comfort and luxury streetwear.`;
+
+  // Banner image for OG
+  const bannerUrl = category.banner?.url
+    ? category.banner.url.startsWith('http')
+      ? category.banner.url
+      : `${siteUrl}${category.banner.url}`
+    : `${siteUrl}/logo.png`;
 
   return {
     title,
@@ -37,7 +54,7 @@ export async function generateMetadata({ params }) {
       siteName: '92DEGREE',
       images: [
         {
-          url: `${siteUrl}/logo.png`,
+          url: bannerUrl,
           width: 1200,
           height: 630,
           alt: `${category.label} Collection – 92DEGREE`,
@@ -50,11 +67,9 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       title,
       description,
-      images: [`${siteUrl}/logo.png`],
+      images: [bannerUrl],
     },
-    alternates: {
-      canonical: `${siteUrl}/category/${category.slug}`,
-    },
+    alternates: { canonical: `${siteUrl}/category/${category.slug}` },
     robots: {
       index: true,
       follow: true,
@@ -69,55 +84,61 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// --- Main component ---
+// --- Page component ---
 export default async function CategoryPage({ params }) {
   const { slug } = await params;
-  const category = categories.find((c) => c.slug === slug);
 
-  if (!category) {
-    notFound();
-  }
+  const [category, allCategories] = await Promise.all([
+    client.fetch(CATEGORY_BY_SLUG_QUERY, { slug }),
+    client.fetch(ALL_CATEGORIES_QUERY),
+  ]);
 
-  const categoryProducts = getProductsByCategory(slug);
+  if (!category) notFound();
 
-  // --- JSON‑LD Structured Data (CollectionPage) ---
+  // Parallel fetch — first page + total for this category
+  const [initialProducts, initialTotal] = await Promise.all([
+    client.fetch(PRODUCTS_PAGINATED_QUERY, {
+      category: slug,
+      search: '',
+      start: 0,
+      end: PAGE_SIZE,
+    }),
+    client.fetch(PRODUCTS_COUNT_QUERY, { category: slug, search: '' }),
+  ]);
+
+  // --- JSON-LD ---
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://92degree.com';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${category.label} Collection | 92DEGREE`,
-    description: `Explore the official 92DEGREE ${category.label} collection. Engineered for thermal comfort and luxury streetwear.`,
+    description:
+      category.tagline ||
+      `Explore the official 92DEGREE ${category.label} collection.`,
     url: `${siteUrl}/category/${category.slug}`,
     isPartOf: {
       '@type': 'WebSite',
       name: '92DEGREE',
       url: siteUrl,
     },
-    about: {
-      '@type': 'Product',
-      name: `${category.label} Collection`,
-      description: `${category.label} products from 92DEGREE.`,
-    },
   };
 
   return (
     <>
-      {/* Inject JSON‑LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <main className="bg-[#FAFAF8] min-h-screen pt-20">
- 
         <CategoryClient
           category={category}
-          categoryProducts={categoryProducts}
-          allCategories={categories}
+          initialProducts={initialProducts}
+          initialTotal={initialTotal}
+          allCategories={allCategories}
         />
-
         <WhatsAppCtaBar />
-       </main>
+      </main>
     </>
   );
 }

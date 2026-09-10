@@ -1,9 +1,14 @@
- 
-import { getAllProducts, categories } from '@/data/products';
 import ShopClient from '@/components/shop/ShopClient';
 import ShopHero from '@/components/shop/ShopHero';
+import { client } from '@/sanity/client';
+import {
+  PRODUCTS_PAGINATED_QUERY,
+  PRODUCTS_COUNT_QUERY,
+  CATEGORIES_WITH_COUNT_QUERY,
+} from '@/sanity/queries';
 
-// --- Generate metadata dynamically ---
+const PAGE_SIZE = 9;
+
 export async function generateMetadata() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://92degree.com';
   const title = 'Shop All Collections | 92DEGREE Official Store';
@@ -37,9 +42,7 @@ export async function generateMetadata() {
       description,
       images: [`${siteUrl}/logo.png`],
     },
-    alternates: {
-      canonical: `${siteUrl}/shop`,
-    },
+    alternates: { canonical: `${siteUrl}/shop` },
     robots: {
       index: true,
       follow: true,
@@ -54,7 +57,6 @@ export async function generateMetadata() {
   };
 }
 
-// --- Optional JSON‑LD structured data (CollectionPage) ---
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -71,12 +73,21 @@ const jsonLd = {
   },
 };
 
-export default function ShopPage() {
-  const initialProducts = getAllProducts();
+export default async function ShopPage() {
+  // Parallel fetch — only the first page + counts
+  const [initialProducts, initialTotal, categories] = await Promise.all([
+    client.fetch(PRODUCTS_PAGINATED_QUERY, {
+      category: 'all',
+      search: '',
+      start: 0,
+      end: PAGE_SIZE,
+    }),
+    client.fetch(PRODUCTS_COUNT_QUERY, { category: 'all', search: '' }),
+    client.fetch(CATEGORIES_WITH_COUNT_QUERY),
+  ]);
 
   return (
     <>
-      {/* Inject JSON‑LD structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -84,7 +95,11 @@ export default function ShopPage() {
 
       <main className="bg-[#FAFAF8] min-h-screen pt-20">
         <ShopHero />
-        <ShopClient initialProducts={initialProducts} categories={categories} />
+        <ShopClient
+          initialProducts={initialProducts}
+          initialTotal={initialTotal}
+          categories={categories}
+        />
       </main>
     </>
   );

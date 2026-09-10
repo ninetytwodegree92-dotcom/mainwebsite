@@ -12,6 +12,11 @@ import TestimonialsSection from '@/components/homepage/TestimonialsSection';
 import WhatsAppCtaBar from '@/components/WhatsAppCtaBar';
 import LifestyleStoryBlock from '@/components/homepage/LifestyleStoryBlock';
 
+
+
+import { client } from '@/sanity/client';
+import { HOMEPAGE_QUERY, FEATURED_PRODUCTS_QUERY } from '@/sanity/queries';
+
 // --- Metadata for SEO ---
 export const metadata = {
   title: '92DEGREE – Luxury Leather Outerwear & Streetwear | Official Store',
@@ -85,7 +90,17 @@ const jsonLd = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+
+    const homepage = await client.fetch(HOMEPAGE_QUERY);
+ 
+  // Featured products: prefer homepage-picked, fallback to `featured == true`
+  let featuredProducts = homepage?.featuredSection?.products || [];
+  if (!featuredProducts.length) {
+    featuredProducts = await client.fetch(FEATURED_PRODUCTS_QUERY);
+  }
+
+
   return (
     <>
       {/* Inject JSON-LD structured data */}
@@ -96,10 +111,14 @@ export default function HomePage() {
 
       {/* Main content – wrapped in <main> for semantic correctness */}
       <main>
-        <HeroSection />
+      <HeroSection slides={homepage?.heroSlides || []} />
         <MarqueeStrip />
         <CategoriesBentoGrid />
-        <ProductGridSection />
+
+        <ProductGridSection
+          products={featuredProducts}
+          section={homepage?.featuredSection}
+        />
         <BrandStatementSection />
 
         <LifestyleStoryBlock

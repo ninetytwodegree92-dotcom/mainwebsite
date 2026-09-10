@@ -7,15 +7,15 @@ import {
   getAllProductSlugs,
 } from '@/data/products';
 
-// --- Generate static params for all products ---
+// --- Static params ---
 export async function generateStaticParams() {
-  return getAllProductSlugs(); // returns [{ slug: 'product-slug' }, ...]
+  return await getAllProductSlugs();   // ← await
 }
 
-// --- Dynamic SEO Metadata ---
+// --- SEO Metadata ---
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);   // ← await
 
   if (!product) {
     return {
@@ -26,8 +26,10 @@ export async function generateMetadata({ params }) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://92degree.com';
   const productUrl = `${siteUrl}/product/${product.slug}`;
-  const imageUrl = product.images?.[0]
-    ? `${siteUrl}${product.images[0]}`
+  const imageUrl = product.images?.[0]?.url
+    ? product.images[0].url.startsWith('http')
+      ? product.images[0].url                    // Sanity CDN → absolute
+      : `${siteUrl}${product.images[0].url}`     // local path → prefix
     : `${siteUrl}/logo.png`;
 
   const title = `${product.name} | 92DEGREE Official Store`;
@@ -54,10 +56,7 @@ export async function generateMetadata({ params }) {
         },
       ],
       locale: 'en_US',
-      type: 'product',
-      price: product.price ? `${product.price}` : undefined,
-      priceCurrency: product.currency || 'PKR',
-      availability: 'https://schema.org/InStock',
+      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
@@ -65,9 +64,7 @@ export async function generateMetadata({ params }) {
       description,
       images: [imageUrl],
     },
-    alternates: {
-      canonical: productUrl,
-    },
+    alternates: { canonical: productUrl },
     robots: {
       index: true,
       follow: true,
@@ -82,23 +79,25 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// --- Main component ---
+// --- Page component ---
 export default async function ProductPage({ params }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);   // ← await
 
-  if (!product) {
-    notFound();
-  }
+  if (!product) notFound();
 
-  const relatedProducts = getProductsByCategory(product.category)
-    .filter((p) => p.id !== product.id)
+  // Related products — same category, excluding self
+  const allInCategory = await getProductsByCategory(product.category);   // ← await
+  const relatedProducts = allInCategory
+    .filter((p) => p._id !== product._id)
     .slice(0, 3);
 
-  // --- JSON-LD Structured Data (Product) ---
+  // --- JSON-LD ---
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://92degree.com';
-  const imageUrl = product.images?.[0]
-    ? `${siteUrl}${product.images[0]}`
+  const imageUrl = product.images?.[0]?.url
+    ? product.images[0].url.startsWith('http')
+      ? product.images[0].url
+      : `${siteUrl}${product.images[0].url}`
     : `${siteUrl}/logo.png`;
 
   const jsonLd = {
@@ -108,20 +107,14 @@ export default async function ProductPage({ params }) {
     description: product.description || `${product.name} from 92DEGREE.`,
     image: imageUrl,
     sku: product.slug,
-    brand: {
-      '@type': 'Brand',
-      name: '92DEGREE',
-    },
+    brand: { '@type': 'Brand', name: '92DEGREE' },
     offers: {
       '@type': 'Offer',
       url: `${siteUrl}/product/${product.slug}`,
       priceCurrency: product.currency || 'PKR',
       price: product.price ? product.price.toFixed(2) : '0.00',
       availability: 'https://schema.org/InStock',
-      seller: {
-        '@type': 'Organization',
-        name: '92DEGREE',
-      },
+      seller: { '@type': 'Organization', name: '92DEGREE' },
     },
     ...(product.material && { material: product.material }),
     ...(product.colors && { color: product.colors.join(', ') }),
@@ -130,7 +123,6 @@ export default async function ProductPage({ params }) {
 
   return (
     <>
-      {/* Inject JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

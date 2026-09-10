@@ -4,46 +4,46 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getWhatsAppLink } from '@/data/products';
-import { 
-  MessageCircle, 
-  ShieldCheck, 
-  Truck, 
-  Ruler, 
-  ChevronRight, 
+import {
+  MessageCircle,
+  ShieldCheck,
+  Truck,
+  Ruler,
+  ChevronRight,
   ChevronDown,
-  Check, 
-  Bell, 
+  Check,
+  Bell,
   ArrowRight,
-  Sparkles
 } from 'lucide-react';
 
 export default function ProductClient({ product, relatedProducts }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState(
-    product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'M'
+    product.sizes?.length > 0 ? product.sizes[0] : 'M'
   );
   const [userFitInfo, setUserFitInfo] = useState('');
   const [openAccordion, setOpenAccordion] = useState('details');
 
   const isComingSoon = product.comingSoon;
 
-  // Handles WhatsApp link generation using the central helper
+  // ---- WhatsApp action ----
   const handleWhatsAppAction = () => {
     let link = getWhatsAppLink(product, isComingSoon ? null : selectedSize);
 
-    // If user provided height/weight fit info, append it to the message
     if (userFitInfo.trim() && !isComingSoon) {
-      const extraMsg = ` (Fit Info: ${userFitInfo.trim()})`;
-      link += encodeURIComponent(extraMsg);
+      link += encodeURIComponent(` (Fit Info: ${userFitInfo.trim()})`);
     }
 
     window.open(link, '_blank');
   };
 
+  // ---- Safe image access ----
+  const activeImage = product.images?.[activeImgIndex] || product.images?.[0];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
-      
-      {/* Breadcrumb Navigation */}
+
+      {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs font-semibold text-[#6B6B6B] uppercase tracking-wider mb-8">
         <Link href="/" className="hover:text-[#1A1A1A]">HOME</Link>
         <ChevronRight className="w-3.5 h-3.5 text-[#E5E5E0]" />
@@ -52,26 +52,32 @@ export default function ProductClient({ product, relatedProducts }) {
         <span className="text-[#A9744F]">{product.name}</span>
       </nav>
 
-      {/* MAIN PRODUCT DISPLAY GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-        
-        {/* LEFT: Product Gallery (Cols 1-7) */}
-        <div className="lg:col-span-7 space-y-4">
-          
-          {/* Main Large Image Display */}
-          <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#E5E5E0] bg-[#F5F4F0] shadow-xs">
-            <Image
-              src={product.images[activeImgIndex] || product.images[0]}
-              alt={product.name}
-              fill
-              priority
-              className={`object-cover object-center ${
-                isComingSoon ? 'filter grayscale contrast-125 opacity-80' : 'filter brightness-[0.98]'
-              }`}
-              sizes="(max-width: 1024px) 100vw, 700px"
-            />
 
-            {/* Status Badge */}
+        {/* ===================== LEFT: GALLERY ===================== */}
+        <div className="lg:col-span-7 space-y-4">
+          {/* Main image */}
+          <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#E5E5E0] bg-[#F5F4F0] shadow-xs">
+            {activeImage?.url ? (
+              <Image
+                src={activeImage.url}
+                alt={activeImage.alt || product.name}
+                fill
+                priority
+                className={`object-cover object-center ${
+                  isComingSoon
+                    ? 'filter grayscale contrast-125 opacity-80'
+                    : 'filter brightness-[0.98]'
+                }`}
+                sizes="(max-width: 1024px) 100vw, 700px"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#6B6B6B] text-xs uppercase">
+                No image available
+              </div>
+            )}
+
+            {/* Badges */}
             <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
               {isComingSoon ? (
                 <span className="px-3.5 py-1 text-[10px] font-bold tracking-widest text-white uppercase bg-[#1A1A1A] rounded-full shadow-xs">
@@ -82,7 +88,6 @@ export default function ProductClient({ product, relatedProducts }) {
                   IN STOCK • READY TO SHIP
                 </span>
               )}
-
               {product.featured && (
                 <span className="px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase bg-[#A9744F] rounded-full shadow-xs">
                   FEATURED
@@ -91,8 +96,8 @@ export default function ProductClient({ product, relatedProducts }) {
             </div>
           </div>
 
-          {/* Thumbnail Image Row */}
-          {product.images.length > 1 && (
+          {/* Thumbnails */}
+          {product.images?.length > 1 && (
             <div className="grid grid-cols-4 gap-3">
               {product.images.map((img, idx) => (
                 <button
@@ -104,54 +109,51 @@ export default function ProductClient({ product, relatedProducts }) {
                       : 'border-[#E5E5E0] opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <Image src={img} alt="Thumbnail" fill className="object-cover" />
+                  {img?.url && (
+                    <Image
+                      src={img.url}
+                      alt={img.alt || `Thumbnail ${idx + 1}`}
+                      fill
+                      sizes="150px"
+                      className="object-cover"
+                    />
+                  )}
                 </button>
               ))}
             </div>
           )}
-
         </div>
 
-        {/* RIGHT: Buy Box & Product Info (Cols 8-12) */}
+        {/* ===================== RIGHT: BUY BOX ===================== */}
         <div className="lg:col-span-5 space-y-6">
-          
-          {/* Header Info */}
+
+          {/* Header */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs font-bold text-[#A9744F] uppercase tracking-widest">
               <span>CATEGORY: {product.category}</span>
-              <span>ITEM #{product.id}</span>
+              <span>ITEM #{product._id?.slice(-6)}</span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-black text-[#1A1A1A] uppercase tracking-tight leading-tight">
               {product.name}
             </h1>
 
-            {/* Pricing */}
             <div className="pt-1">
-              {isComingSoon ? (
-                <span className="text-xl font-bold text-[#6B6B6B] uppercase tracking-wider">
-                  PRICE LAUNCHING SOON
+              {!isComingSoon && (
+                <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
+                  FREE EXPRESS SHIPPING
                 </span>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl font-black text-[#A9744F]">
-                    {product.currency} {product.price?.toLocaleString()}
-                  </span>
-                  <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
-                    FREE EXPRESS SHIPPING
-                  </span>
-                </div>
               )}
             </div>
           </div>
 
-          {/* Short Description */}
+          {/* Description */}
           <p className="text-xs sm:text-sm text-[#6B6B6B] leading-relaxed">
             {product.description}
           </p>
 
-          {/* Available Colors */}
-          {product.colors && product.colors.length > 0 && (
+          {/* Colors */}
+          {product.colors?.length > 0 && (
             <div className="space-y-1.5 pt-2 border-t border-[#E5E5E0]">
               <span className="text-xs font-bold text-[#1A1A1A] uppercase tracking-wider block">
                 COLOR: <span className="text-[#6B6B6B]">{product.colors.join(', ')}</span>
@@ -159,8 +161,8 @@ export default function ProductClient({ product, relatedProducts }) {
             </div>
           )}
 
-          {/* Interactive Size Selector (Only for live items) */}
-          {!isComingSoon && product.sizes && (
+          {/* Size selector */}
+          {!isComingSoon && product.sizes?.length > 0 && (
             <div className="space-y-2 pt-2 border-t border-[#E5E5E0]">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#1A1A1A] uppercase tracking-wider">
@@ -170,7 +172,6 @@ export default function ProductClient({ product, relatedProducts }) {
                   {selectedSize} SELECTED
                 </span>
               </div>
-
               <div className="grid grid-cols-4 gap-2">
                 {product.sizes.map((size) => (
                   <button
@@ -189,7 +190,7 @@ export default function ProductClient({ product, relatedProducts }) {
             </div>
           )}
 
-          {/* Optional Fit Advice Input */}
+          {/* Fit advice */}
           {!isComingSoon && (
             <div className="p-4 bg-[#F5F4F0] rounded-xl border border-[#E5E5E0] space-y-2">
               <label className="text-xs font-bold text-[#1A1A1A] uppercase flex items-center gap-2">
@@ -209,7 +210,7 @@ export default function ProductClient({ product, relatedProducts }) {
             </div>
           )}
 
-          {/* Main Action Button */}
+          {/* Action button */}
           <div>
             {isComingSoon ? (
               <button
@@ -225,13 +226,13 @@ export default function ProductClient({ product, relatedProducts }) {
                 className="w-full inline-flex items-center justify-center gap-3 py-4 bg-[#A9744F] text-white font-bold text-xs tracking-widest uppercase rounded-xl hover:bg-[#8F5F3E] transition-all shadow-md group"
               >
                 <MessageCircle className="w-5 h-5" />
-                <span>ORDER VIA WHATSAPP ({product.currency} {product.price?.toLocaleString()})</span>
+                <span>ORDER VIA WHATSAPP</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             )}
           </div>
 
-          {/* Guarantees Box */}
+          {/* Guarantees */}
           <div className="grid grid-cols-2 gap-3 pt-4 border-t border-[#E5E5E0]">
             <div className="flex items-center gap-2.5 p-3 bg-[#F5F4F0] rounded-xl border border-[#E5E5E0]">
               <ShieldCheck className="w-5 h-5 text-[#A9744F] shrink-0" />
@@ -240,7 +241,6 @@ export default function ProductClient({ product, relatedProducts }) {
                 <p className="text-[9px] text-[#6B6B6B]">Full-Grain Quality</p>
               </div>
             </div>
-
             <div className="flex items-center gap-2.5 p-3 bg-[#F5F4F0] rounded-xl border border-[#E5E5E0]">
               <Truck className="w-5 h-5 text-[#A9744F] shrink-0" />
               <div>
@@ -250,10 +250,9 @@ export default function ProductClient({ product, relatedProducts }) {
             </div>
           </div>
 
-          {/* Accordions: Details / Care / Shipping */}
+          {/* Accordions */}
           <div className="space-y-2 pt-4 border-t border-[#E5E5E0]">
-            
-            {/* Accordion 1: Details */}
+            {/* Details */}
             <div className="bg-[#F5F4F0] border border-[#E5E5E0] rounded-xl overflow-hidden">
               <button
                 onClick={() => setOpenAccordion(openAccordion === 'details' ? null : 'details')}
@@ -266,7 +265,7 @@ export default function ProductClient({ product, relatedProducts }) {
                 <div className="px-4 pb-4 text-xs text-[#6B6B6B] space-y-2 border-t border-[#E5E5E0] pt-3">
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#A9744F]" />
-                    <span>Full-grain leather with high-density thermal fill</span>
+                    <span>{product.material || 'Full-grain leather with high-density thermal fill'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#A9744F]" />
@@ -280,7 +279,7 @@ export default function ProductClient({ product, relatedProducts }) {
               )}
             </div>
 
-            {/* Accordion 2: Care */}
+            {/* Care */}
             <div className="bg-[#F5F4F0] border border-[#E5E5E0] rounded-xl overflow-hidden">
               <button
                 onClick={() => setOpenAccordion(openAccordion === 'care' ? null : 'care')}
@@ -295,15 +294,12 @@ export default function ProductClient({ product, relatedProducts }) {
                 </div>
               )}
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-      {/* RELATED PRODUCTS SECTION */}
-      {relatedProducts && relatedProducts.length > 0 && (
+      {/* ===================== RELATED PRODUCTS ===================== */}
+      {relatedProducts?.length > 0 && (
         <section className="mt-20 pt-16 border-t border-[#E5E5E0]">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -314,7 +310,6 @@ export default function ProductClient({ product, relatedProducts }) {
                 RELATED PIECES
               </h2>
             </div>
-
             <Link
               href="/shop"
               className="text-xs font-bold text-[#1A1A1A] hover:text-[#A9744F] uppercase tracking-wider flex items-center gap-1"
@@ -325,35 +320,36 @@ export default function ProductClient({ product, relatedProducts }) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {relatedProducts.map((rel) => (
-              <Link
-                key={rel.id}
-                href={`/product/${rel.id}`}
-                className="group bg-[#F5F4F0] border border-[#E5E5E0] rounded-2xl overflow-hidden p-4 flex flex-col justify-between hover:border-[#A9744F] transition-all"
-              >
-                <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden mb-4 bg-[#FAFAF8]">
-                  <Image
-                    src={rel.images[0]}
-                    alt={rel.name}
-                    fill
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-bold text-[#1A1A1A] uppercase group-hover:text-[#A9744F] transition-colors">
-                    {rel.name}
-                  </h3>
-                  <p className="text-xs font-black text-[#A9744F] mt-1">
-                    {rel.comingSoon ? 'COMING SOON' : `${rel.currency} ${rel.price?.toLocaleString()}`}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {relatedProducts.map((rel) => {
+              const relImg = rel.images?.[0];
+              return (
+                <Link
+                  key={rel._id}
+                  href={`/product/${rel.slug}`}
+                  className="group bg-[#F5F4F0] border border-[#E5E5E0] rounded-2xl overflow-hidden p-4 flex flex-col justify-between hover:border-[#A9744F] transition-all"
+                >
+                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden mb-4 bg-[#FAFAF8]">
+                    {relImg?.url && (
+                      <Image
+                        src={relImg.url}
+                        alt={relImg.alt || rel.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 300px"
+                        className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-[#1A1A1A] uppercase group-hover:text-[#A9744F] transition-colors">
+                      {rel.name}
+                    </h3>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}
-
     </div>
   );
 }
