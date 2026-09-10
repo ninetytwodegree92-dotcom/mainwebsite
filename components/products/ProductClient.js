@@ -143,6 +143,16 @@ export default function ProductClient({ product, relatedProducts }) {
                 <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
                   FREE EXPRESS SHIPPING
                 </span>
+<<<<<<< HEAD
+=======
+              ) : (
+                <div className="flex items-center gap-3">
+                  
+                  <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
+                    FREE EXPRESS SHIPPING
+                  </span>
+                </div>
+>>>>>>> a63aea8741687c3cee55e477531bdc15d59ede13
               )}
             </div>
           </div>
