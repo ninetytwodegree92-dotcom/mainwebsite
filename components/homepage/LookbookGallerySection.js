@@ -54,7 +54,7 @@ export default function LookbookGallerySection() {
   return (
     <section ref={containerRef} className="bg-[#F5F4F0] py-16 sm:py-24 border-t border-[#E5E5E0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header Bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 sm:mb-12 gap-4">
           <div>
@@ -71,7 +71,7 @@ export default function LookbookGallerySection() {
           </p>
         </div>
 
-        {/* 4-PHOTO CAMPAIGN LOOKBOOK GRID */}
+        {/* 4-PHOTO CAMPAIGN LOOKBOOK GRID */} 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {lookbookPhotos.map((item) => (
             <div
@@ -83,6 +83,7 @@ export default function LookbookGallerySection() {
                 src={item.image}
                 alt={item.title}
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover object-center transition-transform duration-700 group-hover:scale-105 filter brightness-[0.96]"
               />
 
