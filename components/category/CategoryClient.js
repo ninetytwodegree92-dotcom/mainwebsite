@@ -197,15 +197,6 @@ export default function CategoryClient({
                           IN STOCK
                         </span>
                       </div>
-<<<<<<< HEAD
-=======
-
-                      {/* <div className="absolute top-4 right-4 z-10">
-                        <span className="px-3.5 py-1 text-xs font-black text-white bg-[#A9744F] rounded-full shadow-xs">
-                          {product.currency} {product.price?.toLocaleString()}
-                        </span>
-                      </div> */}
->>>>>>> a63aea8741687c3cee55e477531bdc15d59ede13
                     </Link>
 
                     <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
