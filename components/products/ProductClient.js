@@ -139,21 +139,9 @@ export default function ProductClient({ product, relatedProducts }) {
             </h1>
 
             <div className="pt-1">
-              {!isComingSoon && (
-                <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
-                  FREE EXPRESS SHIPPING
-                </span>
-<<<<<<< HEAD
-=======
-              ) : (
-                <div className="flex items-center gap-3">
-                  
-                  <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
-                    FREE EXPRESS SHIPPING
-                  </span>
-                </div>
->>>>>>> a63aea8741687c3cee55e477531bdc15d59ede13
-              )}
+              <span className="px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded">
+                FREE EXPRESS SHIPPING
+              </span>
             </div>
           </div>
 
@@ -279,7 +267,7 @@ export default function ProductClient({ product, relatedProducts }) {
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#A9744F]" />
-                    <span>Matte finish hardware with custom 92DEGREE zippers</span>
+                    <span>Matte finish hardware with custom 92DEGREES zippers</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-[#A9744F]" />
