@@ -1,14 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { categories } from '@/data/products';
-import { 
-  MessageCircle, 
-  ArrowUp, 
-  ArrowUpRight, 
-  ShieldCheck, 
-  Truck, 
-  Ruler 
+import {
+  MessageCircle,
+  ArrowUp,
+  ArrowUpRight,
+  ShieldCheck,
+  Truck,
+  Ruler,
 } from 'lucide-react';
 
 export default function Footer() {
@@ -17,23 +18,24 @@ export default function Footer() {
   };
 
   const handleWhatsAppContact = () => {
-    const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '923001234567';
+    const whatsappNumber =
+      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '923001234567';
     const message = encodeURIComponent(
-      'Hello 92degree! I have a general customer inquiry regarding your products, stock, or sizing.'
+      'Hello 92degrees! I have a general customer inquiry regarding your products, stock, or sizing.'
     );
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
   };
 
   return (
     <footer className="relative bg-[#FAFAF8] border-t border-[#E5E5E0] pt-16 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 text-[#1A1A1A] overflow-hidden select-none">
-      
+
       {/* Subtle Background Watermark Logo */}
-      <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 pointer-events-none opacity-[0.03] text-[18vw] font-black tracking-tighter text-[#1A1A1A] whitespace-nowrap leading-none z-0">
-        92DEGREE
+      <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 pointer-events-none opacity-[0.04] text-[18vw] font-black tracking-tighter text-[#1A1A1A] whitespace-nowrap leading-none z-0">
+        92DEGREES
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Top Perks Strip */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-12 border-b border-[#E5E5E0]">
           <div className="flex items-center gap-3.5 p-4 bg-[#F5F4F0] rounded-2xl border border-[#E5E5E0]">
@@ -41,8 +43,12 @@ export default function Footer() {
               <MessageCircle className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase text-[#1A1A1A] tracking-wider">WHATSAPP VIP CONCIERGE</h4>
-              <p className="text-[11px] text-[#6B6B6B]">Instant sizing advice & live support</p>
+              <h4 className="text-xs font-bold uppercase text-[#1A1A1A] tracking-wider">
+                WHATSAPP VIP CONCIERGE
+              </h4>
+              <p className="text-[11px] text-[#6B6B6B]">
+                Instant sizing advice & live support
+              </p>
             </div>
           </div>
 
@@ -51,8 +57,12 @@ export default function Footer() {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase text-[#1A1A1A]">100% GENUINE LEATHER</h4>
-              <p className="text-[11px] text-[#6B6B6B]">Handcrafted small-batch drops</p>
+              <h4 className="text-xs font-bold uppercase text-[#1A1A1A]">
+                100% GENUINE LEATHER
+              </h4>
+              <p className="text-[11px] text-[#6B6B6B]">
+                Handcrafted small-batch drops
+              </p>
             </div>
           </div>
 
@@ -61,26 +71,50 @@ export default function Footer() {
               <Truck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase text-[#1A1A1A]">EXPRESS GLOBAL SHIPPING</h4>
-              <p className="text-[11px] text-[#6B6B6B]">Insured door-to-door delivery</p>
+              <h4 className="text-xs font-bold uppercase text-[#1A1A1A]">
+                EXPRESS GLOBAL SHIPPING
+              </h4>
+              <p className="text-[11px] text-[#6B6B6B]">
+                Insured door-to-door delivery
+              </p>
             </div>
           </div>
         </div>
 
         {/* Main Footer Links Columns */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 py-12 border-b border-[#E5E5E0]">
-          
+
           {/* Brand Info (Cols 1-5) */}
           <div className="md:col-span-5 space-y-5">
-            <Link href="/" className="inline-flex items-center gap-1 group">
-              <span className="text-3xl font-black tracking-tighter text-[#1A1A1A]">
-                92DEGREE
-              </span>
-              <span className="w-2.5 h-2.5 rounded-full bg-[#A9744F]" />
+            {/* ---- BRAND LOGO: image + wordmark ---- */}
+            <Link
+              href="/"
+              className="inline-flex items-center gap-3 group shrink-0"
+            >
+              {/* Logo image */}
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0">
+                <Image
+                  src="/og-image.png"
+                  alt="92DEGREES Logo"
+                  fill
+                  sizes="(max-width: 640px) 48px, 56px"
+                  className="object-contain"
+                />
+              </div>
+
+              {/* Wordmark + accent dot */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-[#1A1A1A] leading-none whitespace-nowrap">
+                  92DEGREES
+                </span>
+                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#A9744F] shrink-0 mb-1" />
+              </div>
             </Link>
 
             <p className="text-xs text-[#6B6B6B] leading-relaxed max-w-sm">
-              Crafted at the intersection of industrial warmth and minimalist street couture. Small-batch leather outerwear, heavyweight fleece, and technical streetwear engineered for prestige.
+              Crafted at the intersection of industrial warmth and minimalist
+              street couture. Small-batch leather outerwear, heavyweight fleece,
+              and technical streetwear engineered for prestige.
             </p>
 
             {/* Direct WhatsApp Concierge Card */}
@@ -157,7 +191,7 @@ export default function Footer() {
 
         {/* Sub-Footer Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#6B6B6B] uppercase tracking-wider font-semibold">
-          <p>© {new Date().getFullYear()} 92DEGREE. ALL RIGHTS RESERVED.</p>
+          <p>© {new Date().getFullYear()} 92DEGREES. ALL RIGHTS RESERVED.</p>
 
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-[#1A1A1A] transition-colors">
@@ -166,7 +200,10 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-[#1A1A1A] transition-colors">
               TERMS OF SERVICE
             </Link>
-            <Link href="/contact" className="hover:text-[#1A1A1A] transition-colors flex items-center gap-1">
+            <Link
+              href="/contact"
+              className="hover:text-[#1A1A1A] transition-colors flex items-center gap-1"
+            >
               <Ruler className="w-3.5 h-3.5 text-[#A9744F]" />
               <span>SIZE GUIDE</span>
             </Link>
