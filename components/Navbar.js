@@ -132,33 +132,36 @@ export default function Navbar() {
 
       {/* ===== Main Header ===== */}
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled
             ? 'bg-[#FAFAF8]/90 backdrop-blur-md border-b border-[#E5E5E0] shadow-xs py-3'
             : 'bg-[#FAFAF8] border-b border-[#E5E5E0] py-4'
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
           {/* ---- LEFT: Logo + Nav ---- */}
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-8 h-8 sm:w-9 sm:h-9">
-                <Image
-                  src="/logo.png"
-                  alt="92DEGREE Logo"
-                  fill
-                  sizes="36px"
-                  className="object-contain"
-                />
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-2xl sm:text-3xl font-black tracking-tighter text-[#1A1A1A]">
-                  92DEGREES
-                </span>
-                <span className="w-2 h-2 rounded-full bg-[#A9744F]" />
-              </div>
-            </Link>
+            <Link href="/" className="flex items-center gap-3 sm:gap-4 group shrink-0">
+  {/* Logo image — bigger, responsive, valid Tailwind sizes */}
+  <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 shrink-0">
+    <Image
+      src="/og-image.png"
+      alt="92DEGREES Logo"
+      fill
+      priority
+      sizes="(max-width: 640px) 48px, (max-width: 1024px) 56px, 64px"
+      className="object-contain"
+    />
+  </div>
+
+  {/* Brand text — larger and tighter */}
+  <div className="flex items-center gap-1.5">
+    <span className="text-3xl sm:text-4xl lg:text-[2.75rem] font-black tracking-tighter text-[#1A1A1A] leading-none">
+      92DEGREES
+    </span>
+    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#A9744F] mb-1" />
+  </div>
+</Link>
 
             <nav className="hidden lg:flex items-center gap-7 text-xs font-bold tracking-wider text-[#1A1A1A] uppercase">
               <Link href="/" className="hover:text-[#A9744F] transition-colors">HOME</Link>
@@ -176,9 +179,8 @@ export default function Navbar() {
                 >
                   <span>CATEGORIES</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-[#A9744F] transition-transform duration-200 ${
-                      dropdownOpen ? 'rotate-180' : ''
-                    }`}
+                    className={`w-3.5 h-3.5 text-[#A9744F] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''
+                      }`}
                   />
                 </button>
 
@@ -209,9 +211,8 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               aria-label="Toggle Search"
-              className={`p-2 rounded-xl transition-colors ${
-                searchOpen ? 'bg-[#1A1A1A] text-white' : 'text-[#1A1A1A] hover:text-[#A9744F]'
-              }`}
+              className={`p-2 rounded-xl transition-colors ${searchOpen ? 'bg-[#1A1A1A] text-white' : 'text-[#1A1A1A] hover:text-[#A9744F]'
+                }`}
             >
               {searchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
             </button>
