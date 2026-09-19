@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, Suspense } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 
 const MIN_DISPLAY_TIME = 1800; // ms — how long loader stays minimum
@@ -152,19 +153,35 @@ function LoaderInner() {
               <span className="text-[#6B6B6B]">SEASON 01 // 2026</span>
             </div>
 
-            <div className="my-auto text-center space-y-4">
-              <div className="inline-flex items-center gap-2">
-                <span className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-[#1A1A1A]">
-                  92DEGREE
-                </span>
-                <span className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-[#A9744F]" />
+            {/* ===== CENTER: LOGO IMAGE + WORDMARK ===== */}
+            <div className="my-auto text-center space-y-5 px-2">
+              <div className="flex items-center justify-center gap-3 sm:gap-4 max-w-full">
+                {/* Logo image */}
+                <div className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0">
+                  <Image
+                    src="/og-image.png"
+                    alt="92DEGREES Logo"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 56px, (max-width: 1024px) 64px, 80px"
+                    className="object-contain"
+                  />
+                </div>
+
+                {/* Wordmark + accent dot */}
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#1A1A1A] leading-none whitespace-nowrap">
+                    92DEGREES
+                  </span>
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#A9744F] shrink-0 mb-1 sm:mb-2" />
+                </div>
               </div>
 
-              <p className="text-xs text-[#6B6B6B] uppercase tracking-[0.3em] font-semibold">
-                Thermal Outerwear & Streetwear
+              <p className="text-[10px] sm:text-xs text-[#6B6B6B] uppercase tracking-[0.3em] font-semibold">
+                Thermal Outerwear &amp; Streetwear
               </p>
 
-              <div className="pt-2 font-mono text-4xl sm:text-6xl font-black text-[#A9744F]">
+              <div className="pt-1 font-mono text-4xl sm:text-6xl font-black text-[#A9744F] leading-none">
                 {formattedProgress}%
               </div>
             </div>
