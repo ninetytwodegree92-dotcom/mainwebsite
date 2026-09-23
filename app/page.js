@@ -15,7 +15,9 @@ import LifestyleStoryBlock from '@/components/homepage/LifestyleStoryBlock';
 
 
 import { client } from '@/sanity/client';
-import { HOMEPAGE_QUERY, FEATURED_PRODUCTS_QUERY } from '@/sanity/queries';
+import { HOMEPAGE_QUERY, FEATURED_PRODUCTS_QUERY ,  HOMEPAGE_CATEGORY_RAILS_QUERY } from '@/sanity/queries';
+import CategoryRails from '@/components/homepage/CategoryRails';
+import PaymentPolicySection from '@/components/homepage/PaymentPolicySection';
 
 // --- Metadata for SEO ---
 export const metadata = {
@@ -47,7 +49,7 @@ export const metadata = {
     title: '92DEGREE – Luxury Leather Outerwear & Streetwear',
     description:
       'Handcrafted thermal leather jackets, hoodies, and streetwear – engineered for extreme comfort and minimalistic couture.',
-    images: [process.env.NEXT_PUBLIC_SITE_URL + '/og-image.png'], // replace with your actual Twitter image
+    images: [process.env.NEXT_PUBLIC_SITE_URL + '/twitter-image.jpg'], // replace with your actual Twitter image
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://92degree.com",
@@ -101,6 +103,9 @@ export default async function HomePage() {
   }
 
 
+    const categoryRails = await client.fetch(HOMEPAGE_CATEGORY_RAILS_QUERY);
+
+
   return (
     <>
       {/* Inject JSON-LD structured data */}
@@ -114,6 +119,10 @@ export default async function HomePage() {
       <HeroSection slides={homepage?.heroSlides || []} />
         <MarqueeStrip />
         <CategoriesBentoGrid />
+
+        
+        {/* 👇 Place it here, right before the featured product grid */}
+        <CategoryRails categories={categoryRails} />
 
         <ProductGridSection
           products={featuredProducts}
@@ -141,6 +150,8 @@ export default async function HomePage() {
 
         {/* <ComingSoonSection /> */}
         <AboutSummarySection />
+
+        <PaymentPolicySection/>
 
         {/* <InstagramProofStrip /> */}
         <LookbookGallerySection />
