@@ -230,3 +230,33 @@ export const SEARCH_PRODUCTS_QUERY = defineQuery(`
     }
   }
 `);
+
+
+// Homepage — category rails with product previews
+export const HOMEPAGE_CATEGORY_RAILS_QUERY = defineQuery(`
+  *[_type == "category"] | order(order asc) [0...5] {
+    _id,
+    label,
+    "slug": slug.current,
+    tagline,
+    "products": *[
+      _type == "product"
+      && references(^._id)
+    ] | order(_createdAt desc) [0...10] {
+      _id,
+      name,
+      "slug": slug.current,
+      "category": category->slug.current,
+      price,
+      currency,
+      sizes,
+      colors,
+      featured,
+      "images": images[]{
+        "url": coalesce(upload.asset->url, url),
+        "alt": alt,
+        "lqip": upload.asset->metadata.lqip
+      }
+    }
+  }
+`);
