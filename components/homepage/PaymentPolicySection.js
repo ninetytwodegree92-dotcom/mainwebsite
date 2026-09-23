@@ -57,7 +57,7 @@ function FadeIn({ children, delay = 0, y = 30, className = '' }) {
 }
 
 export default function PaymentPolicySection() {
-  const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '923001234567';
+  const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '923157819884';
 
   const handleWhatsApp = () => {
     const msg = encodeURIComponent(
