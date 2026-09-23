@@ -47,7 +47,7 @@ export const metadata = {
     title: '92DEGREE – Luxury Leather Outerwear & Streetwear',
     description:
       'Handcrafted thermal leather jackets, hoodies, and streetwear – engineered for extreme comfort and minimalistic couture.',
-    images: [process.env.NEXT_PUBLIC_SITE_URL + '/twitter-image.jpg'], // replace with your actual Twitter image
+    images: [process.env.NEXT_PUBLIC_SITE_URL + '/og-image.png'], // replace with your actual Twitter image
   },
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://92degree.com",
