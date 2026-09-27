@@ -159,12 +159,12 @@ function LoaderInner() {
                 {/* Logo image */}
                 <div className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0">
                   <Image
-                    src="/og-image.png"
+                    src="/monster-bg.png"
                     alt="92DEGREES Logo"
                     fill
                     priority
                     sizes="(max-width: 640px) 56px, (max-width: 1024px) 64px, 80px"
-                    className="object-contain"
+                    className="object-contain scale-200"
                   />
                 </div>
 
