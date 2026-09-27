@@ -133,8 +133,8 @@ export default function Navbar() {
       {/* ===== Main Header ===== */}
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled
-            ? 'bg-[#FAFAF8]/90 backdrop-blur-md border-b border-[#E5E5E0] shadow-xs py-3'
-            : 'bg-[#FAFAF8] border-b border-[#E5E5E0] py-4'
+          ? 'bg-[#FAFAF8]/90 backdrop-blur-md border-b border-[#E5E5E0] shadow-xs py-3'
+          : 'bg-[#FAFAF8] border-b border-[#E5E5E0] py-4'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -142,26 +142,26 @@ export default function Navbar() {
           {/* ---- LEFT: Logo + Nav ---- */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-3 sm:gap-4 group shrink-0">
-  {/* Logo image — bigger, responsive, valid Tailwind sizes */}
-  <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 shrink-0">
-    <Image
-      src="/og-image.png"
-      alt="92DEGREES Logo"
-      fill
-      priority
-      sizes="(max-width: 640px) 48px, (max-width: 1024px) 56px, 64px"
-      className="object-contain"
-    />
-  </div>
+              {/* Logo image — bigger, responsive, valid Tailwind sizes */}
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 shrink-0">
+                <Image
+                  src="/monster-bg.png"
+                  alt="92DEGREES Logo"
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 48px, (max-width: 1024px) 56px, 64px"
+                  className="object-contain scale-200"
+                />
+              </div>
 
-  {/* Brand text — larger and tighter */}
-  <div className="flex items-center gap-1.5">
-    <span className="text-3xl sm:text-4xl lg:text-[2.75rem] font-black tracking-tighter text-[#1A1A1A] leading-none">
-      92DEGREES
-    </span>
-    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#A9744F] mb-1" />
-  </div>
-</Link>
+              {/* Brand text — larger and tighter */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-3xl sm:text-4xl lg:text-[2.75rem] font-black tracking-tighter text-[#1A1A1A] leading-none">
+                  92DEGREES
+                </span>
+                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#A9744F] mb-1" />
+              </div>
+            </Link>
 
             <nav className="hidden lg:flex items-center gap-7 text-xs font-bold tracking-wider text-[#1A1A1A] uppercase">
               <Link href="/" className="hover:text-[#A9744F] transition-colors">HOME</Link>
@@ -257,7 +257,7 @@ export default function Navbar() {
                 <input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Search leather puffers, bombers, hoodies, tracksuits..."
+                  placeholder="Search Down puffers, bombers, hoodies, tracksuits..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-12 py-3.5 text-xs sm:text-sm bg-[#F5F4F0] border border-[#E5E5E0] rounded-2xl text-[#1A1A1A] placeholder-[#6B6B6B] font-medium focus:outline-none focus:border-[#A9744F] transition-colors"
