@@ -94,11 +94,11 @@ export default function Footer() {
               {/* Logo image */}
               <div className="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0">
                 <Image
-                  src="/og-image.png"
+                  src="/monster-bg.png"
                   alt="92DEGREES Logo"
                   fill
                   sizes="(max-width: 640px) 48px, 56px"
-                  className="object-contain"
+                  className="object-contain scale-200"
                 />
               </div>
 
