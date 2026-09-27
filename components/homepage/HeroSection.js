@@ -164,7 +164,7 @@ export default function HeroSection({ slides = [] }) {
                   {/* Buttons */}
                   <div className="animate-gsap flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3">
                     <a
-                      href="#shop"
+                      href="/shop"
                       className="inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-[#A9744F] text-white font-semibold text-xs tracking-wider uppercase rounded-lg hover:bg-[#8F5F3E] transition-all duration-300 shadow-md group"
                     >
                       <span>EXPLORE PIECE</span>
