@@ -60,19 +60,19 @@ export const PRODUCTS_BY_CATEGORY_QUERY = defineQuery(`
     ${imageProjection}
   }
 `);
-
 export const ALL_CATEGORIES_QUERY = defineQuery(`
   *[_type == "category"] | order(order asc) {
     _id,
     label,
     "slug": slug.current,
     tagline,
+    order,
     "banner": {
       "url": coalesce(banner.upload.asset->url, banner.url),
       "alt": banner.alt
     }
   }
-`);
+`)
 
 export const CATEGORY_BY_SLUG_QUERY = defineQuery(`
   *[_type == "category" && slug.current == $slug][0] {
