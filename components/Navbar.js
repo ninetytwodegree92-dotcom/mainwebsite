@@ -6,10 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/lib/cartStore';
 import { client } from '@/sanity/client';
-import {
-  ALL_CATEGORIES_QUERY,
-  SEARCH_PRODUCTS_QUERY,
-} from '@/sanity/queries';
+import { SEARCH_PRODUCTS_QUERY } from '@/sanity/queries';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ShoppingBag,
@@ -22,7 +19,19 @@ import {
   Loader2,
 } from 'lucide-react';
 
-export default function Navbar({ categories: initialCategories = [] }) {
+// ═══════════════════════════════════════════════════
+// HARDCODED CATEGORIES — update when you add/remove
+// a category in Sanity Studio
+// ═══════════════════════════════════════════════════
+const CATEGORIES = [
+  { label: 'Down Jackets',    slug: 'down-jackets' },
+  { label: 'Leather Jackets', slug: 'leather-jackets' },
+  { label: 'Polo Shirts',     slug: 'polo' },
+  { label: 'Hoodies',         slug: 'hoodies' },
+  { label: 'Tracksuits',      slug: 'tracksuits' },
+];
+
+export default function Navbar() {
   const router = useRouter();
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,7 +41,6 @@ export default function Navbar({ categories: initialCategories = [] }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [categories, setCategories] = useState(initialCategories);
   const [isMounted, setIsMounted] = useState(false);
 
   const searchInputRef = useRef(null);
@@ -50,24 +58,6 @@ export default function Navbar({ categories: initialCategories = [] }) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // ─── Fallback: fetch categories client-side ───
-  useEffect(() => {
-    if (initialCategories.length > 0) return;
-
-    let cancelled = false;
-    (async () => {
-      try {
-        const cats = await client.fetch(ALL_CATEGORIES_QUERY);
-        if (!cancelled) setCategories(cats);
-      } catch (err) {
-        console.error('Categories fetch error:', err);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [initialCategories.length]);
 
   // ─── Auto-focus search ───
   useEffect(() => {
@@ -107,7 +97,7 @@ export default function Navbar({ categories: initialCategories = [] }) {
     return () => document.removeEventListener('mousedown', onClick);
   }, [dropdownOpen]);
 
-  // ─── Debounced search ───
+  // ─── Debounced search (Sanity) ───
   useEffect(() => {
     const trimmed = searchQuery.trim();
 
@@ -164,7 +154,9 @@ export default function Navbar({ categories: initialCategories = [] }) {
     <>
       {/* ═══ Top Announcement Bar ═══ */}
       <div className="bg-[#1A1A1A] text-[#FAFAF8] text-[10px] sm:text-[11px] font-medium tracking-widest uppercase py-2 px-3 text-center border-b border-[#E5E5E0]/10 flex items-center justify-center gap-2 select-none">
-        <span className="truncate">FREE EXPRESS SHIPPING ON ORDERS OVER 20,000 PKR</span>
+        <span className="truncate">
+          FREE EXPRESS SHIPPING ON ORDERS OVER 20,000 PKR
+        </span>
         <span className="hidden sm:inline-block text-[#A9744F]">•</span>
         <button
           onClick={handleWhatsAppClick}
@@ -184,14 +176,12 @@ export default function Navbar({ categories: initialCategories = [] }) {
         }`}
       >
         <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
-
           {/* ═══ LEFT: Logo + Nav ═══ */}
           <div className="flex items-center gap-4 lg:gap-8 min-w-0">
             <Link
               href="/"
               className="flex items-center gap-2 sm:gap-3 group shrink-0"
             >
-              {/* Logo image — bigger, with proper scale-200 replacement */}
               <div className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0 overflow-visible">
                 <Image
                   src="/monster-bg.png"
@@ -203,7 +193,6 @@ export default function Navbar({ categories: initialCategories = [] }) {
                 />
               </div>
 
-              {/* Brand text */}
               <div className="flex items-center gap-1 sm:gap-1.5">
                 <span className="text-2xl sm:text-3xl lg:text-[2.25rem] xl:text-[2.75rem] font-black tracking-tighter text-[#1A1A1A] leading-none">
                   92DEGREES
@@ -212,7 +201,7 @@ export default function Navbar({ categories: initialCategories = [] }) {
               </div>
             </Link>
 
-            {/* Desktop nav — visible only on lg+ */}
+            {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-bold tracking-wider text-[#1A1A1A] uppercase whitespace-nowrap">
               <Link href="/" className="hover:text-[#A9744F] transition-colors">
                 HOME
@@ -221,7 +210,7 @@ export default function Navbar({ categories: initialCategories = [] }) {
                 SHOP ALL
               </Link>
 
-              {/* Categories Dropdown */}
+              {/* Categories Dropdown — HARDCODED */}
               <div
                 ref={dropdownRef}
                 className="relative"
@@ -243,7 +232,7 @@ export default function Navbar({ categories: initialCategories = [] }) {
                 </button>
 
                 <AnimatePresence>
-                  {dropdownOpen && categories.length > 0 && (
+                  {dropdownOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: -6 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -252,9 +241,9 @@ export default function Navbar({ categories: initialCategories = [] }) {
                       className="absolute top-full left-0 pt-2 z-50"
                     >
                       <div className="w-64 bg-[#FAFAF8] border border-[#E5E5E0] rounded-2xl shadow-lg p-3 space-y-1">
-                        {categories.map((cat) => (
+                        {CATEGORIES.map((cat) => (
                           <Link
-                            key={cat._id}
+                            key={cat.slug}
                             href={`/category/${cat.slug}`}
                             onClick={() => setDropdownOpen(false)}
                             className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F5F4F0] hover:text-[#A9744F] transition-colors group"
@@ -294,7 +283,6 @@ export default function Navbar({ categories: initialCategories = [] }) {
               {searchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
             </button>
 
-            {/* WhatsApp button — hidden below xl to save space */}
             <button
               onClick={handleWhatsAppClick}
               className="hidden xl:inline-flex items-center gap-2 px-3 lg:px-4 py-2 bg-[#F5F4F0] border border-[#E5E5E0] text-[#1A1A1A] font-bold text-xs tracking-wider uppercase rounded-lg hover:border-[#A9744F] hover:text-[#A9744F] transition-all whitespace-nowrap"
@@ -308,7 +296,7 @@ export default function Navbar({ categories: initialCategories = [] }) {
               aria-label="View Cart Bag"
               className="relative p-2 sm:p-2.5 text-[#1A1A1A] hover:text-[#A9744F] transition-colors group bg-[#F5F4F0] border border-[#E5E5E0] rounded-xl"
             >
-              <ShoppingBag className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
+              <ShoppingBag className="w-5 h-5" />
               {cartCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] sm:min-w-[20px] sm:h-5 px-1 rounded-full bg-[#A9744F] text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
                   {cartCount}
@@ -370,7 +358,9 @@ export default function Navbar({ categories: initialCategories = [] }) {
                             ? 'SEARCHING…'
                             : `MATCHING PRODUCTS (${searchResults.length})`}
                         </span>
-                        {searchLoading && <Loader2 className="w-3 h-3 animate-spin" />}
+                        {searchLoading && (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        )}
                       </div>
 
                       {!searchLoading && searchResults.length === 0 && (
@@ -384,12 +374,14 @@ export default function Navbar({ categories: initialCategories = [] }) {
                           {searchResults.map((product) => {
                             const thumb = product.images?.[0];
                             const thumbUrl =
-                              (typeof thumb === 'string' ? thumb : thumb?.url) ||
-                              '/placeholder.webp';
+                              (typeof thumb === 'string'
+                                ? thumb
+                                : thumb?.url) || '/placeholder.webp';
                             const thumbAlt =
                               (typeof thumb === 'object' && thumb?.alt) ||
                               product.name;
-                            const productSlug = product.slug?.current || product.slug;
+                            const productSlug =
+                              product.slug?.current || product.slug;
 
                             return (
                               <Link
@@ -499,23 +491,22 @@ export default function Navbar({ categories: initialCategories = [] }) {
                     SHOP ALL
                   </Link>
 
-                  {categories.length > 0 && (
-                    <div className="space-y-2 pt-2 border-t border-[#E5E5E0]">
-                      <span className="text-xs font-bold text-[#A9744F]">
-                        CATEGORIES
-                      </span>
-                      {categories.map((cat) => (
-                        <Link
-                          key={cat._id}
-                          href={`/category/${cat.slug}`}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block text-xs font-bold text-[#6B6B6B] hover:text-[#1A1A1A] py-1 pl-2 border-l-2 border-[#E5E5E0] hover:border-[#A9744F] transition-colors"
-                        >
-                          {cat.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  {/* HARDCODED categories in mobile drawer */}
+                  <div className="space-y-2 pt-2 border-t border-[#E5E5E0]">
+                    <span className="text-xs font-bold text-[#A9744F]">
+                      CATEGORIES
+                    </span>
+                    {CATEGORIES.map((cat) => (
+                      <Link
+                        key={cat.slug}
+                        href={`/category/${cat.slug}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block text-xs font-bold text-[#6B6B6B] hover:text-[#1A1A1A] py-1 pl-2 border-l-2 border-[#E5E5E0] hover:border-[#A9744F] transition-colors"
+                      >
+                        {cat.label}
+                      </Link>
+                    ))}
+                  </div>
 
                   <Link
                     href="/about"
