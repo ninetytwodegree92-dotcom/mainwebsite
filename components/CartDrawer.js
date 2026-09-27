@@ -3,16 +3,17 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useCartStore } from '@/lib/cartStore';
-import { STORE_WHATSAPP_NUMBER } from '@/data/products'; // adjust path if needed
-import { 
-  ShoppingBag, 
-  X, 
-  Plus, 
-  Minus, 
-  Trash2, 
-  MessageCircle, 
+import { STORE_WHATSAPP_NUMBER } from '@/data/products';
+
+import {
+  ShoppingBag,
+  X,
+  Plus,
+  Minus,
+  Trash2,
+  MessageCircle,
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
 } from 'lucide-react';
 
 export default function CartDrawer() {
@@ -29,7 +30,7 @@ export default function CartDrawer() {
     getTotalPrice,
   } = useCartStore();
 
-  // Prevent SSR Hydration Mismatch for LocalStorage values
+  // Prevent SSR hydration mismatch for localStorage values
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -39,23 +40,29 @@ export default function CartDrawer() {
   const totalCount = getTotalCount();
   const totalPrice = getTotalPrice();
 
-  // --- Build WhatsApp message with all cart details ---
+  // ─── Build WhatsApp message with all cart details ───
   const buildWhatsAppMessage = () => {
     if (items.length === 0) return '';
 
-    let message = 'Hello 92DEGREE! I would like to place an order for the following items:\n\n';
-    
+    let message =
+      'Hello 92DEGREE! I would like to place an order for the following items:\n\n';
+
     items.forEach((item, index) => {
       const product = item.product;
       const size = item.selectedSize;
       const qty = item.quantity;
       const price = product.price || 0;
       const subtotal = price * qty;
-      message += `${index + 1}. ${product.name} (Size: ${size}) × ${qty} = ${product.currency || 'USD'} ${subtotal.toFixed(2)}\n`;
+      message += `${index + 1}. ${product.name} (Size: ${size}) × ${qty} = ${
+        product.currency || 'PKR'
+      } ${subtotal.toFixed(2)}\n`;
     });
 
-    message += `\nTotal: ${items[0]?.product?.currency || 'USD'} ${totalPrice.toFixed(2)}`;
-    message += '\n\nPlease confirm availability and provide payment details. Thank you!';
+    message += `\nTotal: ${items[0]?.product?.currency || 'PKR'} ${totalPrice.toFixed(
+      2
+    )}`;
+    message +=
+      '\n\nPlease confirm availability and provide payment details. Thank you!';
 
     return encodeURIComponent(message);
   };
@@ -113,7 +120,7 @@ export default function CartDrawer() {
                   YOUR BAG IS EMPTY
                 </h3>
                 <p className="text-xs text-[#6B6B6B] mt-1 max-w-xs">
-                  Explore our leather puffer collection and add pieces to your cart.
+                  Explore our down jacket collection and add pieces to your cart.
                 </p>
               </div>
               <button
@@ -124,76 +131,89 @@ export default function CartDrawer() {
               </button>
             </div>
           ) : (
-            items.map((item) => (
-              <div
-                key={item.cartItemId}
-                className="flex gap-4 p-3.5 bg-[#F5F4F0] border border-[#E5E5E0] rounded-2xl relative group"
-              >
-                {/* Thumbnail Image */}
-                <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-[#FAFAF8] border border-[#E5E5E0] shrink-0">
-                  <Image
-                    src={item.product.images[0]}
-                    alt={item.product.name}
-                    fill
-                    className="object-cover object-center"
-                  />
-                </div>
+            items.map((item) => {
+              // Safe image access — Sanity stores images as { url, alt }
+              const img = item.product.images?.[0];
+              const imgUrl =
+                (typeof img === 'string' ? img : img?.url) || '/placeholder.webp';
+              const imgAlt =
+                (typeof img === 'object' && img?.alt) || item.product.name;
 
-                {/* Info & Quantity Actions */}
-                <div className="flex-1 flex flex-col justify-between py-0.5">
-                  <div className="pr-6">
-                    <h4 className="text-xs font-extrabold text-[#1A1A1A] uppercase tracking-tight line-clamp-1">
-                      {item.product.name}
-                    </h4>
-                    <span className="text-[10px] font-bold text-[#A9744F] uppercase tracking-wider block mt-0.5">
-                      SIZE: {item.selectedSize}
-                    </span>
+              return (
+                <div
+                  key={item.cartItemId}
+                  className="flex gap-4 p-3.5 bg-[#F5F4F0] border border-[#E5E5E0] rounded-2xl relative group"
+                >
+                  {/* Thumbnail Image */}
+                  <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-[#FAFAF8] border border-[#E5E5E0] shrink-0">
+                    <Image
+                      src={imgUrl}
+                      alt={imgAlt}
+                      fill
+                      sizes="80px"
+                      className="object-cover object-center"
+                    />
                   </div>
 
-                  {/* Quantity Counter Row */}
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="flex items-center bg-[#FAFAF8] border border-[#E5E5E0] rounded-lg p-0.5">
-                      <button
-                        onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                        className="p-1 hover:text-[#A9744F] transition-colors"
-                        aria-label="Decrease Quantity"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </button>
-                      <span className="px-2 text-xs font-bold text-[#1A1A1A]">
-                        {item.quantity}
+                  {/* Info & Quantity Actions */}
+                  <div className="flex-1 flex flex-col justify-between py-0.5">
+                    <div className="pr-6">
+                      <h4 className="text-xs font-extrabold text-[#1A1A1A] uppercase tracking-tight line-clamp-1">
+                        {item.product.name}
+                      </h4>
+                      <span className="text-[10px] font-bold text-[#A9744F] uppercase tracking-wider block mt-0.5">
+                        SIZE: {item.selectedSize}
                       </span>
-                      <button
-                        onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                        className="p-1 hover:text-[#A9744F] transition-colors"
-                        aria-label="Increase Quantity"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
                     </div>
 
-                    <button
-                      onClick={() => removeItem(item.cartItemId)}
-                      className="p-1 text-[#6B6B6B] hover:text-red-600 transition-colors"
-                      aria-label="Remove Item"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    {/* Quantity Counter Row */}
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="flex items-center bg-[#FAFAF8] border border-[#E5E5E0] rounded-lg p-0.5">
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.cartItemId, item.quantity - 1)
+                          }
+                          className="p-1 hover:text-[#A9744F] transition-colors"
+                          aria-label="Decrease Quantity"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+                        <span className="px-2 text-xs font-bold text-[#1A1A1A]">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.cartItemId, item.quantity + 1)
+                          }
+                          className="p-1 hover:text-[#A9744F] transition-colors"
+                          aria-label="Increase Quantity"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => removeItem(item.cartItemId)}
+                        className="p-1 text-[#6B6B6B] hover:text-red-600 transition-colors"
+                        aria-label="Remove Item"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
         {/* Drawer Footer */}
         {items.length > 0 && (
           <div className="p-6 border-t border-[#E5E5E0] bg-[#FAFAF8] space-y-4">
-            
-            {/* Price Subtotal */}
+            {/* Subtotal note */}
             <div className="space-y-1">
               <p className="text-[10px] text-[#6B6B6B]">
-                Free express global shipping & size confirmation via WhatsApp.
+                Free express global shipping &amp; size confirmation via WhatsApp.
               </p>
             </div>
 
@@ -207,7 +227,7 @@ export default function CartDrawer() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
 
-            {/* Clear Cart Link */}
+            {/* Clear Cart + Guarantee */}
             <div className="flex items-center justify-between pt-1">
               <button
                 onClick={clearCart}
@@ -217,13 +237,11 @@ export default function CartDrawer() {
               </button>
               <div className="flex items-center gap-1 text-[10px] font-bold text-[#A9744F] uppercase">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>100% GENUINE LEATHER GUARANTEED</span>
+                <span>100% GENUINE DOWN FILL GUARANTEED</span>
               </div>
             </div>
-
           </div>
         )}
-
       </aside>
     </>
   );
