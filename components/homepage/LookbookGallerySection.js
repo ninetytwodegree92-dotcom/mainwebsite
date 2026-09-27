@@ -10,9 +10,9 @@ import { ShieldCheck, Truck, Ruler, Sparkles, MessageCircle } from 'lucide-react
 gsap.registerPlugin(ScrollTrigger);
 
 const lookbookPhotos = [
-  { id: 'lb1', image: '/look/look-1.webp', title: 'MATRIX BOMBER', tag: 'LOOK 01' },
-  { id: 'lb2', image: '/look/look-2.webp', title: 'COGNAC THERMAL', tag: 'LOOK 02' },
-  { id: 'lb3', image: '/look/look-3.webp', title: 'URBAN SHELL', tag: 'LOOK 03' },
+  { id: 'lb1', image: '/look/look1.webp', title: 'MATRIX BOMBER', tag: 'LOOK 01' },
+  { id: 'lb2', image: '/look/look2.webp', title: 'COGNAC THERMAL', tag: 'LOOK 02' },
+  { id: 'lb3', image: '/look/look3.webp', title: 'URBAN SHELL', tag: 'LOOK 03' },
   { id: 'lb4', image: '/look/look-4.webp', title: 'HIGH-COLLAR COUTURE', tag: 'LOOK 04' },
 ];
 
