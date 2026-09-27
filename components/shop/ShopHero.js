@@ -97,41 +97,40 @@ export default function ShopHero() {
           </div>
 
           {/* RIGHT: Classic Editorial Image Card (Cols 8-12) */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#E5E5E0] bg-[#F5F4F0] shadow-sm group">
-              
-              <Image
-                src="/shop-hero.webp" // High-res cognac puffer image
-                alt="92degree Classic Cognac Leather Puffer"
-                fill
-                priority
-                className="object-cover object-center filter brightness-[0.98] transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 1024px) 100vw, 500px"
-              />
+      <div className="lg:col-span-5 relative">
+  <div className="relative w-full aspect-video rounded-[2rem] overflow-hidden border border-[#E5E5E0] bg-[#F5F4F0] shadow-sm group">
 
-              {/* Soft Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 via-transparent to-transparent" />
+    <Image
+      src="/hero-shop.webp"
+      alt="92degree Cognac Down Jacket"
+      fill
+      priority
+      className="object-cover object-center filter brightness-[0.98] transition-transform duration-700 group-hover:scale-105"
+      sizes="(max-width: 1024px) 100vw, 500px"
+    />
 
-              {/* Floating Banner Badge */}
-              <div className="absolute top-4 left-4 z-10">
-                <span className="px-3.5 py-1 text-[10px] font-bold tracking-widest text-[#1A1A1A] uppercase bg-[#FAFAF8]/95 backdrop-blur-md rounded-full border border-[#E5E5E0]">
-                  SIGNATURE PIECE // 2026
-                </span>
-              </div>
+    {/* Soft Gradient Overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 via-transparent to-transparent" />
 
-              {/* Bottom Card Title Overlay */}
-              <div className="absolute bottom-6 left-6 right-6 z-10 text-white space-y-1">
-                <span className="text-[10px] font-bold tracking-widest text-[#A9744F] uppercase block">
-                  100% FULL-GRAIN LEATHER
-                </span>
-                <h3 className="text-xl font-black uppercase tracking-tight">
-                  COGNAC LEATHER PUFFER
-                </h3>
-                 
-              </div>
+    {/* Floating Banner Badge */}
+    <div className="absolute top-4 left-4 z-10">
+      <span className="px-3.5 py-1 text-[10px] font-bold tracking-widest text-[#1A1A1A] uppercase bg-[#FAFAF8]/95 backdrop-blur-md rounded-full border border-[#E5E5E0]">
+        SIGNATURE PIECE // 2026
+      </span>
+    </div>
 
-            </div>
-          </div>
+    {/* Bottom Card Title Overlay */}
+    <div className="absolute bottom-6 left-6 right-6 z-10 text-white space-y-1">
+      <span className="text-[10px] font-bold tracking-widest text-[#A9744F] uppercase block">
+        100% PREMIUM DOWN FILL
+      </span>
+      <h3 className="text-xl font-black uppercase tracking-tight">
+        COGNAC DOWN JACKET
+      </h3>
+    </div>
+
+  </div>
+</div>
 
         </div>
 
