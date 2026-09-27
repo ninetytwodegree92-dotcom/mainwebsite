@@ -26,9 +26,9 @@ const fallbackSlides = [
   {
     _key: 'fb2',
     tag: 'FUTURE DROP // TEASER',
-    title: 'LEATHER PUFFER',
+    title: 'DOWN PUFFER',
     subtitle: 'Heavyweight fleece & technical streetwear tailored for utility.',
-    image: { url: '/banner2.webp', alt: 'Leather Puffer' },
+    image: { url: '/banner2.webp', alt: 'DOWN Puffer' },
     align: 'left',
   },
     {
