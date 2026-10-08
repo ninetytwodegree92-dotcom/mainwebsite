@@ -36,50 +36,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto relative z-10">
 
-        {/* Top Perks Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-12 border-b border-[#E5E5E0]">
-          <div className="flex items-center gap-3.5 p-4 bg-[#F5F4F0] rounded-2xl border border-[#E5E5E0]">
-            <div className="w-10 h-10 rounded-xl bg-[#FAFAF8] border border-[#E5E5E0] flex items-center justify-center text-[#A9744F] shrink-0">
-              <MessageCircle className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase text-[#1A1A1A] tracking-wider">
-                WHATSAPP VIP CONCIERGE
-              </h4>
-              <p className="text-[11px] text-[#6B6B6B]">
-                Instant sizing advice & live support
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3.5 p-4 bg-[#F5F4F0] rounded-2xl border border-[#E5E5E0]">
-            <div className="w-10 h-10 rounded-xl bg-[#FAFAF8] border border-[#E5E5E0] flex items-center justify-center text-[#A9744F] shrink-0">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase text-[#1A1A1A]">
-                100% GENUINE LEATHER
-              </h4>
-              <p className="text-[11px] text-[#6B6B6B]">
-                Handcrafted small-batch drops
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3.5 p-4 bg-[#F5F4F0] rounded-2xl border border-[#E5E5E0]">
-            <div className="w-10 h-10 rounded-xl bg-[#FAFAF8] border border-[#E5E5E0] flex items-center justify-center text-[#A9744F] shrink-0">
-              <Truck className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase text-[#1A1A1A]">
-                EXPRESS GLOBAL SHIPPING
-              </h4>
-              <p className="text-[11px] text-[#6B6B6B]">
-                Insured door-to-door delivery
-              </p>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Main Footer Links Columns */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 py-12 border-b border-[#E5E5E0]">
