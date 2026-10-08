@@ -118,17 +118,17 @@ export default async function HomePage() {
       <main>
       <HeroSection slides={homepage?.heroSlides || []} />
         <MarqueeStrip />
+        <CategoryRails categories={categoryRails} />
         <CategoriesBentoGrid />
 
         
         {/* 👇 Place it here, right before the featured product grid */}
-        <CategoryRails categories={categoryRails} />
 
         <ProductGridSection
           products={featuredProducts}
           section={homepage?.featuredSection}
         />
-        <BrandStatementSection />
+        {/* <BrandStatementSection />
 
         <LifestyleStoryBlock
           label="CRAFTSMANSHIP // 01"
@@ -146,10 +146,10 @@ export default async function HomePage() {
           imageSrc="/banner6.webp"
           imageAlt="Statement Leather Jacket Editorial"
           reverse={true}
-        />
+        /> */}
 
         {/* <ComingSoonSection /> */}
-        <AboutSummarySection />
+        {/* <AboutSummarySection /> */}
 
         <PaymentPolicySection/>
 
