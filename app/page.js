@@ -124,10 +124,10 @@ export default async function HomePage() {
         
         {/* 👇 Place it here, right before the featured product grid */}
 
-        <ProductGridSection
+        {/* <ProductGridSection
           products={featuredProducts}
           section={homepage?.featuredSection}
-        />
+        /> */}
         {/* <BrandStatementSection />
 
         <LifestyleStoryBlock
@@ -154,10 +154,10 @@ export default async function HomePage() {
         <PaymentPolicySection/>
 
         {/* <InstagramProofStrip /> */}
-        <LookbookGallerySection />
+        {/* <LookbookGallerySection /> */}
         <TestimonialsSection />
         <FaqSection />
-        <WhatsAppCtaBar />
+        {/* <WhatsAppCtaBar /> */}
       </main>
     </>
   );
