@@ -185,7 +185,7 @@ export default function Navbar() {
               <div className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0 overflow-visible">
                 <Image
                   src="/monster-bg.png"
-                  alt="92DEGREES Logo"
+                  alt="92DEGREE Logo"
                   fill
                   priority
                   sizes="(max-width: 640px) 56px, (max-width: 1024px) 64px, 80px"
@@ -195,7 +195,7 @@ export default function Navbar() {
 
               <div className="flex items-center gap-1 sm:gap-1.5">
                 <span className="text-2xl sm:text-3xl lg:text-[2.25rem] xl:text-[2.75rem] font-black tracking-tighter text-[#1A1A1A] leading-none">
-                  92DEGREES
+                  92DEGREE
                 </span>
                 <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3 rounded-full bg-[#A9744F] mb-1" />
               </div>
