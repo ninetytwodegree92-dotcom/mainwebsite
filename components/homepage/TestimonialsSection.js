@@ -13,33 +13,43 @@ gsap.registerPlugin(ScrollTrigger);
 const testimonials = [
   {
     id: 1,
-    name: 'Tariq K.',
-    location: 'London, UK',
-    product: 'Cognac Leather Puffer',
+    name: 'Zain A.',
+    location: 'Lahore, PK',
+    product: 'Onyx Down Jacket',
     rating: 5,
-    avatar: '/products/jackets/cognac-puffer-1.jpg',
+    avatar: '/products/jackets/onyx-down-1.jpg',
     comment:
-      'The leather weight and insulation quality are unmatched. I sent my height and weight on WhatsApp, and the team picked the exact right size. Arrived in London in 4 days.',
+      'AoA! Bhai ye jacket pehna to sab pooch rahe hain kahan se li. Matte finish aur stitching itni premium hai, ekdum high-fashion vibe. Thandi mein warm bhi rakhti hai aur weight bhi halka hai. Is saal ki best purchase, guaranteed. JazakAllah!',
   },
   {
     id: 2,
-    name: 'Zain A.',
-    location: 'Lahore, PK',
-    product: 'Onyx Leather Puffer',
+    name: 'Hamza S.',
+    location: 'Karachi, PK',
+    product: 'High-Collar Down Jacket',
     rating: 5,
-    avatar: '/products/jackets/onyx-puffer-1.jpg',
+    avatar: '/products/jackets/high-collar-down-1.jpg',
     comment:
-      'The matte finish on the full-grain leather gives it a serious high-fashion look. Super warm without feeling uncomfortably heavy. Best jacket purchase this year.',
+      'Salam team! Honestly WhatsApp pe order karte waqt thoda skeptical tha, but aap logon ka concierge service itna professional nikla ke ek second bhi doubt nahi raha. Jacket ka detail aur brass hardware — subhanAllah, top tier quality. Delivery bhi time pe mil gayi. Will order again soon!',
   },
   {
     id: 3,
-    name: 'Hamza S.',
-    location: 'Dubai, UAE',
-    product: 'High-Collar Thermal Puffer',
+    name: 'Bilal R.',
+    location: 'Islamabad, PK',
+    product: 'Cognac Down Jacket',
     rating: 5,
-    avatar: '/products/jackets/high-collar-1.jpg',
+    avatar: '/products/jackets/cognac-down-1.jpg',
     comment:
-      'I was skeptical about ordering over WhatsApp at first, but the concierge service was fast and super professional. The jacket detail and brass hardware are top tier.',
+      'Assalam o Alaikum! Jacket aaj hi receive ki hai and honestly expectation se bhi ziada achi hai. Filling ka quality aur insulation dono top class. Height aur weight WhatsApp pe bheja tha, size bilkul perfect fit hui. Islamabad ki thandi ke liye ekdum ideal hai. Bohat shukriya team!',
+  },
+  {
+    id: 4,
+    name: 'Usman M.',
+    location: 'Rawalpindi, PK',
+    product: 'Onyx Down Jacket',
+    rating: 5,
+    avatar: '/products/jackets/onyx-down-2.jpg',
+    comment:
+      'Salam bhai log! Order kiya tha aur 3 din mein deliver ho gaya. Packing bhi bohat achi thi, koi damage nahi. Quality dekh ke yaqeen nahi hua ke itni reasonable price mein itni achi jacket mil sakti hai. Friends ko bhi recommend kar diya hai. Shukriya 92degree!',
   },
 ];
 
@@ -83,7 +93,7 @@ export default function TestimonialsSection() {
       className="bg-[#FAFAF8] py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-[#E5E5E0] select-none"
     >
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 sm:mb-16 gap-4">
           <div>
@@ -105,8 +115,8 @@ export default function TestimonialsSection() {
           </button>
         </div>
 
-        {/* 3 TESTIMONIAL CARDS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* 4 TESTIMONIAL CARDS GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {testimonials.map((review) => (
             <div
               key={review.id}
@@ -131,7 +141,6 @@ export default function TestimonialsSection() {
 
               {/* Reviewer Details */}
               <div className="pt-4 border-t border-[#E5E5E0] flex items-center gap-3.5 relative z-10">
-                
 
                 <div>
                   <div className="flex items-center gap-1.5">
